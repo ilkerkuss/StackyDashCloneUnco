@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4854835512080208887}
   - component: {fileID: 4854835512080208884}
   - component: {fileID: 4854835512080208873}
+  - component: {fileID: 606651642472659387}
   m_Layer: 0
   m_Name: BridgeLeg
   m_TagString: Bridge
@@ -111,6 +112,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 3, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &606651642472659387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4854835512080208882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42ffaa9f0eb47641aaad19172bc98c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2260192859211910983
 PrefabInstance:
   m_ObjectHideFlags: 0

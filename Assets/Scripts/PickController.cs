@@ -6,18 +6,10 @@ using UnityEngine;
 public class PickController : MonoBehaviour
 {
     public static Action OnTriggerWithPick;
-    //public static Action OnTriggerWithObstacle;
-
-    void Start()
-    {
-        
-    }
 
 
-    void Update()
-    {
-        
-    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,7 +17,6 @@ public class PickController : MonoBehaviour
         {
             OnTriggerWithPick?.Invoke();
 
-            //PickManager.Instance.GeneratePick();
             Destroy(gameObject);
         }
        

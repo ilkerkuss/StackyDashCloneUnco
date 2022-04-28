@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,82 +13,120 @@ public class PlayerController : MonoBehaviour
     public Vector3 _movDir;
 
     [SerializeField] private GameObject _playerInventoryObject;
+    [SerializeField] private Animator _playerAnim;
+
+    [SerializeField] private ParticleSystem _dustParticle;
+
+    [SerializeField] private GameObject _playerRig;
 
 
     void Start()
     {
         _playerPos = transform.position;
+        _chrSpeed = 750f;
     }
 
-    void Update()
+    private void OnEnable()
     {
-        /*
-        if (_movDir == Vector3.zero)
-        {
-            _movDir = MobileInput.Instance.SwipeDirection;
-        }
-        */
-        
+        MobileInput.Instance.OnMouseSwipeAction += MoveCharacter;
+        BridgeController.OnBridgeCollision += DecreasePlayerHeight;
+        DirectionWallController.OnDirectionWallCollision += MoveCharacter;
+        BridgeLegController.OnCollisionWithBridgeLeg += SetPlayerPosition;
+        FinishController.OnCollisionWithFinish += StopCharacter;
+        PickManager.Instance.OnGeneratePick += ChangeDustPosition;
+        InventoryController.OnPickAnimation += DecreasePlayerHeight;
     }
 
-    private void FixedUpdate()
+    private void OnDisable()
     {
-        //MoveCharacter(_movDir);
+        MobileInput.Instance.OnMouseSwipeAction -= MoveCharacter;
+        BridgeController.OnBridgeCollision -= DecreasePlayerHeight;
+        DirectionWallController.OnDirectionWallCollision -= MoveCharacter;
+        BridgeLegController.OnCollisionWithBridgeLeg -= SetPlayerPosition;
+        FinishController.OnCollisionWithFinish -= StopCharacter;
+        PickManager.Instance.OnGeneratePick -= ChangeDustPosition;
+        InventoryController.OnPickAnimation -= DecreasePlayerHeight;
+
     }
 
+    #region PlayerMovementFunctions
 
     public void MoveCharacter(Vector3 direction)
     {
-        if (!IsCharacterMoving())
+        if (!IsCharacterMoving() && GameManager.Instance.GameState == GameManager.GameStates.IsGamePlaying)
         {
-            _rb.velocity = direction * _chrSpeed * Time.fixedDeltaTime;
             _movDir = direction;
-        }
-        
+            _rb.velocity = _movDir * _chrSpeed * Time.fixedDeltaTime;
+            RotateCharacter(_movDir);
 
+
+            _playerAnim.SetBool("IsMoving", true);
+            CreateDust();
+        }
     }
 
     public void StopCharacter()
     {
         _rb.velocity = Vector3.zero;
+        _movDir = Vector3.zero;
+        // Debug.Log("dur");
+        _playerAnim.SetBool("IsMoving", false);
+        StopDust();
     }
 
     private bool IsCharacterMoving()
     {
-        if (_rb.velocity.magnitude >0)
+        if (_rb.velocity.magnitude > 0)
         {
+
             return true;
         }
         else
         {
+
             return false;
         }
     }
 
-
-
-    /*
-    private void CollectPickable(GameObject Pickable)
+    private void RotateCharacter(Vector3 rotateDir)
     {
-        Pickable.transform.parent = _playerInventoryObject.transform;
-        Pickable.transform.localPosition = new Vector3(0,(-(Pickable.transform.localScale.y * (_playerInventoryObject.transform.childCount-1))),0);
-        Pickable.transform.rotation = Quaternion.identity;
+        if (rotateDir == Vector3.right)
+        {
+            _playerRig.transform.DORotate(90 * Vector3.up, .35f);
+        }
+        else if (rotateDir == Vector3.left)
+        {
+            _playerRig.transform.DORotate(-90 * Vector3.up, .35f);
+        }
+        else if (rotateDir == Vector3.forward)
+        {
+
+            _playerRig.transform.DORotate(0 * Vector3.up, .35f);
+        }
+        else
+        {
+            _playerRig.transform.DORotate(180 * Vector3.up, .35f);
+        }
 
     }
-    */
+    #endregion
 
 
 
-    private void IncreasePlayerHeight()
+    #region PlayerPositionFunctions
+
+    public void IncreasePlayerHeight()
     {
         Vector3 increasedPos = new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z);
         transform.position = increasedPos;
+        //Debug.Log("player yukarý: " + transform.position.y);
     }
 
-    private void DecreasePlayerHeight(GameObject Pickable)
+    public void DecreasePlayerHeight()
     {
-        Vector3 increasedPos = new Vector3(transform.position.x, transform.position.y - Pickable.transform.localScale.y, transform.position.z);
-        transform.position = increasedPos;
+        Vector3 decreasedPos = new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z);
+        transform.position = decreasedPos;
+        //Debug.Log("player aþaðý: "+transform.position.y);
     }
 
     public void CorrectPlayerPos()
@@ -101,50 +140,61 @@ public class PlayerController : MonoBehaviour
         _playerPos = newPos;
     }
 
-    public void SetDirectionVector(Vector3 newDirection)
+    #endregion
+
+
+
+    #region Dust Particle Function
+
+    public void CreateDust()
     {
-        _movDir = newDirection;
+        _dustParticle.Play();
     }
 
-
-
-    private void OnEnable()
+    public void StopDust()
     {
-        MobileInput.Instance.OnMouseSwipeAction += MoveCharacter;
+        _dustParticle.Stop();
     }
-    
-    private void OnDisable()
-    {
-        MobileInput.Instance.OnMouseSwipeAction -= MoveCharacter;
 
+    public void ChangeDustPosition(GameObject LastPick) // Changes Dust particle position according to last pick position
+    {
+        _dustParticle.transform.position = LastPick.transform.position;
     }
+
+    #endregion
+
     
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.name);
+
         if (other.CompareTag("Pick"))
         {
             IncreasePlayerHeight();
-            //IncreasePlayerHeight(other.gameObject);
 
-            //CollectPickable(other.gameObject);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-       // Debug.Log(collision.transform.name);
 
         if (collision.transform.CompareTag("Obstacle"))
         {
 
-            SetPlayerPosition(collision.transform.position - _movDir);
+            SetPlayerPosition(collision.transform.position - _movDir); // when player collides with obstacle set player position
             CorrectPlayerPos();
+            StopCharacter();
 
-            SetDirectionVector(Vector3.zero);
 
-            
+        }
+        else if (collision.transform.CompareTag("Wall"))
+        {
+            StopCharacter();
+            CorrectPlayerPos();
+        }
+        else if (collision.transform.CompareTag("Finish"))
+        {
+            _playerAnim.SetBool("IsFinish",true);
         }
     }
 

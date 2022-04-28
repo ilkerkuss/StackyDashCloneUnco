@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelController _currentLevel;
 
     private int _currentLevelNumber;
+    private int _pickNumber;
+
 
     private void Awake()
     {
@@ -30,6 +32,20 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        PickManager.OnSetPickText += IncreasePickNumber;
+    }
+
+    private void OnDisable()
+    {
+        PickManager.OnSetPickText -= IncreasePickNumber;
+
+    }
+
+
+
+
     public void GenerateLevel()
     {
         if (_currentLevel !=null)
@@ -42,4 +58,36 @@ public class LevelManager : MonoBehaviour
         PlayerManager.Instance.GeneratePlayer();
 
     }
+
+
+
+    public void IncreaseCurrentLevel()
+    {
+        _currentLevelNumber++;
+        PlayerPrefs.SetInt("Level", _currentLevelNumber);
+    }
+
+    public int GetCurrentLevel()
+    {
+        return PlayerPrefs.GetInt("Level", 0); ;
+    }
+
+
+    public int GetPickNumber()
+    {
+        return _pickNumber;
+    }
+
+    public void IncreasePickNumber()
+    {
+        _pickNumber++;
+
+    }
+
+    public void ResetPickNumber()
+    {
+        _pickNumber = 0;
+    }
+
+
 }

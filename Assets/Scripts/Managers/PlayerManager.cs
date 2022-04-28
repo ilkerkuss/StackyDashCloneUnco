@@ -21,17 +21,6 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
-
-
 
     public void GeneratePlayer()
     {
