@@ -17,6 +17,9 @@ public class PickController : MonoBehaviour
         {
             OnTriggerWithPick?.Invoke();
 
+
+            AudioManager.Instance.PlaySoundAtPoint("PickSound",transform.position);
+
             Destroy(gameObject);
         }
        

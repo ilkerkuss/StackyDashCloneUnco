@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4969473033143697299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4969473033229206493}
+  - component: {fileID: 4969473033143697298}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4969473033229206493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969473033143697299}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4969473033143697298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969473033143697299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e40a890f85322046ab7de6b0bf02071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Audios:
+  - AudioName: BridgeSound
+    AudioClip: {fileID: 8300000, guid: d709c254c5fd1674aa3ae1b9e74e01c8, type: 3}
+    Volume: 0.7
+    Pitch: 0.5
+    SoundLoop: 0
+    AudioSource: {fileID: 0}
+  - AudioName: LevelPassSound
+    AudioClip: {fileID: 8300000, guid: d6438bc30d0d6cb41bfe405216781a57, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    SoundLoop: 0
+    AudioSource: {fileID: 0}
+  - AudioName: PickSound
+    AudioClip: {fileID: 8300000, guid: 1b5d42893318eac4c8e449f97679fa98, type: 3}
+    Volume: 0.5
+    Pitch: 0.6
+    SoundLoop: 0
+    AudioSource: {fileID: 0}
+  - AudioName: SwipeSound
+    AudioClip: {fileID: 8300000, guid: 051e7ab919df4f747b972f7ecd7007e4, type: 3}
+    Volume: 0.1
+    Pitch: 1
+    SoundLoop: 0
+    AudioSource: {fileID: 0}

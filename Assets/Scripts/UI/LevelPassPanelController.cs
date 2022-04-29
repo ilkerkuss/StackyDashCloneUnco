@@ -10,6 +10,8 @@ public class LevelPassPanelController : CanvasController
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _coinText;
 
+    private int _coinNumber;
+
 
     public void SetScoreText() // Set score number  picknumber*5 = score
     {
@@ -18,7 +20,17 @@ public class LevelPassPanelController : CanvasController
 
     public void SetCoinText() //Set coin number of player   score/10 = coin
     {
-        _coinText.text = (LevelManager.Instance.GetPickNumber()/2).ToString();
+
+        _coinText.text = (PlayerPrefs.GetInt("Coin",0)).ToString();
+
+    }
+
+    public void SetCoinNumber()
+    {
+        _coinNumber = PlayerPrefs.GetInt("Coin",0);
+        int newCoin = LevelManager.Instance.GetPickNumber() / 2;
+
+        PlayerPrefs.SetInt("Coin",_coinNumber + newCoin);
     }
 
 
@@ -34,7 +46,9 @@ public class LevelPassPanelController : CanvasController
         //next level yarat
         LevelManager.Instance.GenerateLevel();
 
-        //AudioManager.Instance.StopSound("LevelPassSound"); //stops the level pass sound
+        AudioManager.Instance.StopSound("LevelPassSound"); //stops the level pass sound
+
+        StopAllCoroutines();
 
 
     }

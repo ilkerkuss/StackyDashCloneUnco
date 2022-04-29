@@ -60,9 +60,19 @@ public class InventoryController : MonoBehaviour
     {
         _collectedPickList.RemoveAt(_collectedPickList.Count - 1);
 
-        _collectedPickList.RemoveAll(item => item == null); //removes null elements from list after removal operation
+        //_collectedPickList.RemoveAll(item => item == null); //removes null elements from list after removal operation
 
-        _lastPick = _collectedPickList[_collectedPickList.Count - 1];
+
+        if (_collectedPickList.Count==0)
+        {
+            _lastPick = _mainPick;
+        }
+        else
+        {
+            _lastPick = _collectedPickList[_collectedPickList.Count - 1];
+        }
+        
+
     }
 
     public GameObject GetLastPick()

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class AnimationController : MonoBehaviour
 {
+
     public PlayerController _player;
+    public Animator PlayerAnim;
     public InventoryController _playerInventory;
     public GameObject _finishBox;
 
@@ -22,49 +25,68 @@ public class AnimationController : MonoBehaviour
     private void OnEnable()
     {
         FinishController.OnCollisionWithFinish += FinishMove;
+        FinishController.FinishBoxAction += SetFinishBox;
     }
 
     private void OnDisable()
     {
         FinishController.OnCollisionWithFinish -= FinishMove;
+        FinishController.FinishBoxAction -= SetFinishBox;
     }
 
 
     public IEnumerator InventoryFinishMove()
     {
+      
 
-        for (int i = _playerInventory._collectedPickList.Count - 1; i >= 0; i--)
+        var i = _playerInventory._collectedPickList.Count-1;
+        Debug.Log(i);
+        
+        while (_playerInventory._collectedPickList.Count > 0)
         {
-            _playerInventory._collectedPickList[i].transform.DOJump(_finishBox.transform.position, 1, 1,.25f).OnComplete(()=>_playerInventory._collectedPickList[i].transform.DOScale(Vector3.zero,.1f));
-            //_playerInventory.RemoveLastPickFromList();
-            _playerInventory._collectedPickList[i].transform.parent = null;
             
-            //Destroy(_playerInventory._collectedPickList[i],1);
+            GameObject go = _playerInventory._collectedPickList[i];
+            _playerInventory._collectedPickList[i].transform.DOJump(_finishBox.transform.position, 1, 1, .15f).OnComplete(() => _playerInventory._collectedPickList[i].transform.DOScale(Vector3.zero, .1f).OnComplete(()=> _playerInventory.RemoveLastPickFromList()));
+
+
+            _playerInventory._collectedPickList[i].transform.parent = null;
+            _playerInventory._collectedPickList.RemoveAt(i);
+
             yield return new WaitForSeconds(.1f);
+            Destroy(go);
+            
+            i--;
+            Debug.Log(_playerInventory._collectedPickList.Count + " " + i);
         }
-        _player.transform.DOJump(_finishBox.transform.position - Vector3.forward, 1f, 1, 1f).OnComplete(() => _player.transform.GetChild(0).DORotate(180 * Vector3.up, 1f));
+
+        _player.transform.DOMove(_finishBox.transform.position - Vector3.forward, 1f).OnComplete(() => _player.transform.GetChild(0).DORotate(180 * Vector3.up, 1f));
+
+        FinishController.OnCollisionWithFinish -= FinishMove;
+        CanvasManager.Instance.InGamePanel.HidePanel();
+
+        yield return new WaitForSeconds(1.5f);
+        
+        PlayerAnim.SetBool("IsFinish", true);
+
+        
+        yield return new WaitForSeconds(3.2f);
+        CanvasManager.Instance.LevelPassPanel.ShowPanel();
+
         StopCoroutine(InventoryFinishMove());
-        DOTween.Clear();
+        
+
     }
 
-    public void PlayerFinishMove()
-    {
-        /*
-        foreach (var pick in _playerInventory._collectedPickList)
-        {
-            _player.DecreasePlayerHeight();
-        */
 
-        _player.transform.DOJump(_finishBox.transform.position - Vector3.forward, 2f, 1, 1f).OnComplete(()=> _player.transform.GetChild(0).DORotate(180 * Vector3.up, 1f)); 
-        
-        //_player.transform.GetChild(0).DORotate(180*Vector3.up, 5f).OnComplete(()=> _player.transform.DOMove(_finishBox.transform.position - Vector3.forward, 2)); 
-        //_player.transform.DOMove(_finishBox.transform.position - Vector3.forward,2).OnComplete(()=>_player.transform.DOLookAt(Camera.main.transform.position,.5f));
+
+    public void SetFinishBox(GameObject FinishBOX)
+    {
+        _finishBox = FinishBOX;
     }
 
 
     public void FinishMove()
     {
         StartCoroutine(InventoryFinishMove());
-        //PlayerFinishMove();
     }
 }

@@ -39,5 +39,7 @@ public class GameManager : MonoBehaviour
         LevelManager.Instance.ResetPickNumber();
         CanvasManager.Instance.InGamePanel.SetPickText();
 
+        StopAllCoroutines();
+
     }
 }

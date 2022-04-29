@@ -19,12 +19,19 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject _playerRig;
 
+    public Vector3 IncomingVector;
+
+
+    #region UnityEvents
+
 
     void Start()
     {
         _playerPos = transform.position;
         _chrSpeed = 750f;
     }
+
+
 
     private void OnEnable()
     {
@@ -49,6 +56,46 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.CompareTag("Pick"))
+        {
+            IncreasePlayerHeight();
+
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+
+            SetPlayerPosition(collision.transform.position - _movDir); // when player collides with obstacle set player position
+            CorrectPlayerPos();
+            StopCharacter();
+
+
+        }
+        else if (collision.transform.CompareTag("Wall"))
+        {
+            StopCharacter();
+            CorrectPlayerPos();
+        }
+        else if (collision.transform.CompareTag("Finish"))
+        {
+           // _playerAnim.SetBool("IsFinish", true);
+        }
+    }
+
+
+
+    #endregion
+
+
+
     #region PlayerMovementFunctions
 
     public void MoveCharacter(Vector3 direction)
@@ -59,9 +106,10 @@ public class PlayerController : MonoBehaviour
             _rb.velocity = _movDir * _chrSpeed * Time.fixedDeltaTime;
             RotateCharacter(_movDir);
 
-
+            AudioManager.Instance.PlaySound("SwipeSound");
             _playerAnim.SetBool("IsMoving", true);
             CreateDust();
+
         }
     }
 
@@ -69,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb.velocity = Vector3.zero;
         _movDir = Vector3.zero;
-        // Debug.Log("dur");
+
         _playerAnim.SetBool("IsMoving", false);
         StopDust();
     }
@@ -163,39 +211,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        if (other.CompareTag("Pick"))
-        {
-            IncreasePlayerHeight();
-
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-
-        if (collision.transform.CompareTag("Obstacle"))
-        {
-
-            SetPlayerPosition(collision.transform.position - _movDir); // when player collides with obstacle set player position
-            CorrectPlayerPos();
-            StopCharacter();
-
-
-        }
-        else if (collision.transform.CompareTag("Wall"))
-        {
-            StopCharacter();
-            CorrectPlayerPos();
-        }
-        else if (collision.transform.CompareTag("Finish"))
-        {
-            _playerAnim.SetBool("IsFinish",true);
-        }
-    }
+   
 
 }
