@@ -12,20 +12,12 @@ public class FinishController : MonoBehaviour
     [SerializeField] private GameObject _confettiObject;
     [SerializeField] private GameObject _finishBox;
 
-    void Start()
-    {
-        
-    }
 
-    
-    void Update()
-    {
-        
-    }
+
  
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log(collision.transform.name);
+
         if (collision.transform.CompareTag("Player"))
         {
             FinishBoxAction?.Invoke(_finishBox);

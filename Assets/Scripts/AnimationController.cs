@@ -12,15 +12,8 @@ public class AnimationController : MonoBehaviour
     public InventoryController _playerInventory;
     public GameObject _finishBox;
 
-    void Start()
-    {
-        
-    }
 
-    void Update()
-    {
-        
-    }
+
 
     private void OnEnable()
     {
@@ -35,12 +28,12 @@ public class AnimationController : MonoBehaviour
     }
 
 
+
+
     public IEnumerator InventoryFinishMove()
     {
-      
-
         var i = _playerInventory._collectedPickList.Count-1;
-        Debug.Log(i);
+
         
         while (_playerInventory._collectedPickList.Count > 0)
         {
@@ -53,10 +46,10 @@ public class AnimationController : MonoBehaviour
             _playerInventory._collectedPickList.RemoveAt(i);
 
             yield return new WaitForSeconds(.1f);
-            Destroy(go);
+            Destroy(go,.3f);
             
             i--;
-            Debug.Log(_playerInventory._collectedPickList.Count + " " + i);
+
         }
 
         _player.transform.DOMove(_finishBox.transform.position - Vector3.forward, 1f).OnComplete(() => _player.transform.GetChild(0).DORotate(180 * Vector3.up, 1f));

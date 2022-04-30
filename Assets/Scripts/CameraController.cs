@@ -18,10 +18,9 @@ public class CameraController : MonoBehaviour
 
         if (_player != null)
         {
-
             Vector3 newPos = Vector3.Lerp(transform.position, _inGameOffsetVector + _player.transform.position, _lerpValue);
-
             transform.position = newPos;
+
         }
 
     }
@@ -39,6 +38,10 @@ public class CameraController : MonoBehaviour
         PlayerManager.SetNewPlayerToCamera -= SetCameraTarget;
 
     }
+
+
+
+
 
     private void SetCameraTarget(PlayerController Player)
     {

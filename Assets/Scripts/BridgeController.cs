@@ -26,7 +26,6 @@ public class BridgeController : MonoBehaviour
             var collidedInvCont = other.GetComponentInParent<InventoryController>();
             var collidedPlayer = collidedInvCont.GetComponentInParent<PlayerController>();
 
-            Debug.Log(collidedPlayer.IncomingVector);
 
             if (collidedInvCont._collectedPickList.Count > 1) //// Player has pick more than 1
             {
@@ -42,15 +41,13 @@ public class BridgeController : MonoBehaviour
 
                 AudioManager.Instance.PlaySoundAtPoint("BridgeSound", transform.position);
 
-                //Destroy(this);
+
                 collidedPlayer.IncomingVector = collidedPlayer._movDir;
             }
             
             else
             {
-                Debug.Log("giriþ");
-                
-                
+
                 collidedPlayer.SetPlayerPosition(transform.position);
                 collidedPlayer.CorrectPlayerPos();
                 collidedPlayer.StopCharacter();
@@ -70,13 +67,11 @@ public class BridgeController : MonoBehaviour
 
             if (collidedPlayer._movDir != -collidedPlayer.IncomingVector && collidedInvCont._collectedPickList.Count >= 1)
             {
-            
-                    Debug.Log("çýkýþ");
+ 
                     collidedPlayer.SetPlayerPosition(transform.position);
                     collidedPlayer.CorrectPlayerPos();
                     collidedPlayer.StopCharacter();
 
-                
 
             }
 

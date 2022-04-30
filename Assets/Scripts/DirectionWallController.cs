@@ -22,7 +22,7 @@ public class DirectionWallController : MonoBehaviour
 
 
 
-    public Vector3 GetDirection()
+    public Vector3 GetDirection() // Get Vector3 value according to wall WallDirectionChoice
     {
         return WallDirectionDictionary[WallDirectionChoice];
     }
@@ -33,11 +33,11 @@ public class DirectionWallController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       // Debug.Log(collision.transform.name);
+
         if (collision.transform.CompareTag("Player"))
         {
             OnDirectionWallCollision?.Invoke(GetDirection());
-            Debug.Log("actiona yollandý");
+
         }
     }
 }

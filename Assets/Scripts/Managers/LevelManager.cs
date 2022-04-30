@@ -20,17 +20,14 @@ public class LevelManager : MonoBehaviour
             Instance = this;
         }
     }
+
+
     void Start()
     {
         _currentLevelNumber = PlayerPrefs.GetInt("Level", 0);
         GenerateLevel();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnEnable()
     {

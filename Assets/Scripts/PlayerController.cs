@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
         BridgeLegController.OnCollisionWithBridgeLeg += SetPlayerPosition;
         FinishController.OnCollisionWithFinish += StopCharacter;
         PickManager.Instance.OnGeneratePick += ChangeDustPosition;
-        InventoryController.OnPickAnimation += DecreasePlayerHeight;
+
     }
 
     private void OnDisable()
@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour
         BridgeLegController.OnCollisionWithBridgeLeg -= SetPlayerPosition;
         FinishController.OnCollisionWithFinish -= StopCharacter;
         PickManager.Instance.OnGeneratePick -= ChangeDustPosition;
-        InventoryController.OnPickAnimation -= DecreasePlayerHeight;
 
     }
 
@@ -84,13 +83,8 @@ public class PlayerController : MonoBehaviour
             StopCharacter();
             CorrectPlayerPos();
         }
-        else if (collision.transform.CompareTag("Finish"))
-        {
-           // _playerAnim.SetBool("IsFinish", true);
-        }
+
     }
-
-
 
     #endregion
 
@@ -167,20 +161,17 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 increasedPos = new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z);
         transform.position = increasedPos;
-        //Debug.Log("player yukarý: " + transform.position.y);
     }
 
     public void DecreasePlayerHeight()
     {
         Vector3 decreasedPos = new Vector3(transform.position.x, transform.position.y - 0.1f, transform.position.z);
         transform.position = decreasedPos;
-        //Debug.Log("player aþaðý: "+transform.position.y);
     }
 
     public void CorrectPlayerPos()
     {
         transform.position = new Vector3(_playerPos.x, transform.position.y, _playerPos.z);
-
     }
 
     public void SetPlayerPosition(Vector3 newPos)

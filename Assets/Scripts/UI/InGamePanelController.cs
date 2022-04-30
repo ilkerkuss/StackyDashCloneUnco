@@ -43,13 +43,11 @@ public class InGamePanelController : CanvasController
     public void SetLevelText() // Set level number
     {
          _levelText.text = "Level " + (LevelManager.Instance.GetCurrentLevel() + 1).ToString();
-        //Debug.Log("Level set text");
     }
 
     public void SetPickText() //Set pick number of player
     {
          _pickText.text = LevelManager.Instance.GetPickNumber().ToString();
-        //Debug.Log("pick set text");
     }
 
     public void ActivateTapToStartButton()

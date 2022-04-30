@@ -30,16 +30,20 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        GameState = GameStates.IsGameLoaded;
+        if (GameState != GameStates.IsLevelPass)
+        {
+            GameState = GameStates.IsGameLoaded;
 
-        LevelManager.Instance.GenerateLevel();
+            LevelManager.Instance.GenerateLevel();
 
-        CanvasManager.Instance.InGamePanel.ActivateTapToStartButton();
+            CanvasManager.Instance.InGamePanel.ActivateTapToStartButton();
 
-        LevelManager.Instance.ResetPickNumber();
-        CanvasManager.Instance.InGamePanel.SetPickText();
+            LevelManager.Instance.ResetPickNumber();
+            CanvasManager.Instance.InGamePanel.SetPickText();
 
-        StopAllCoroutines();
+            StopAllCoroutines();
+        }
+        
 
     }
 }

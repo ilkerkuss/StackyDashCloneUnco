@@ -26,27 +26,15 @@ public class LevelController : MonoBehaviour
 
         FinishController.OnCollisionWithFinish -= LevelPassed;
 
-
         GameManager.Instance.GameState = GameManager.GameStates.IsLevelPass;
 
-       /*
-        CanvasManager.Instance.InGamePanel.HidePanel(); //Hides InGamePanel when collide finish object.
-        CanvasManager.Instance.LevelPassPanel.ShowPanel(); //Shows LevelPassPanel when collide finish object.
-        */
+
+        CanvasManager.Instance.LevelPassPanel.LevelPassPanelEndLevelOperations();
 
         AudioManager.Instance.PlaySound("LevelPassSound");
 
-        CanvasManager.Instance.LevelPassPanel.SetCoinNumber();
-        CanvasManager.Instance.LevelPassPanel.SetScoreText();
-        CanvasManager.Instance.LevelPassPanel.SetCoinText();
-        
-
         LevelManager.Instance.IncreaseCurrentLevel();
-        CanvasManager.Instance.InGamePanel.SetLevelText();
-
         LevelManager.Instance.ResetPickNumber();
-        CanvasManager.Instance.InGamePanel.SetPickText();
-        
 
     }
 }

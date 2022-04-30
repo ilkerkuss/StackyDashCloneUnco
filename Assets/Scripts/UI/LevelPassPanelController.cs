@@ -43,6 +43,10 @@ public class LevelPassPanelController : CanvasController
         CanvasManager.Instance.InGamePanel.ShowPanel();
         CanvasManager.Instance.InGamePanel.ActivateTapToStartButton();
 
+
+        CanvasManager.Instance.InGamePanel.SetLevelText();
+        CanvasManager.Instance.InGamePanel.SetPickText();
+
         //next level yarat
         LevelManager.Instance.GenerateLevel();
 
@@ -50,7 +54,13 @@ public class LevelPassPanelController : CanvasController
 
         StopAllCoroutines();
 
+    }
 
+    public void LevelPassPanelEndLevelOperations()
+    {
+        SetCoinNumber();
+        SetCoinText();
+        SetScoreText();
     }
 
 
